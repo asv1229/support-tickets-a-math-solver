@@ -1,1 +1,18 @@
-
+[
+    {
+        "id": 1,
+        "timestamp": "2026-02-27 20:00",
+        "subject": "test",
+        "description": "testing tickets.json",
+        "priority": "Urgent",
+        "status": "Open"
+    },
+    {
+        "id": 2,
+        "timestamp": "2026-02-27 20:01",
+        "subject": "test123134",
+        "description": "tesdt1513rwtw4t",
+        "priority": "High",
+        "status": "Open"
+    }
+]
