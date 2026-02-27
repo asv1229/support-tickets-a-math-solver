@@ -3,8 +3,7 @@ import pandas as pd
 from datetime import datetime
 
 # --- CONFIGURATION ---
-st.set_page_title("Support Desk")
-
+st.set_page_config(page_title="Support Desk")
 # Initialize session state for tickets if it doesn't exist
 if "tickets" not in st.session_state:
     st.session_state.tickets = []
