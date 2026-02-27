@@ -82,20 +82,42 @@ with st.expander("Submit a New Ticket", expanded=not st.session_state.logged_in)
 
 # --- DISPLAY & ADMIN EDITING ---
 st.divider()
-for i, ticket in enumerate(st.session_state.tickets):
-    col1, col2 = st.columns([4, 1])
-    with col1:
-        st.markdown(f"**[{ticket['priority']}] {ticket['subject']}**")
-        st.caption(f"Status: {ticket['status']} | Filed: {ticket['timestamp']}")
-    with col2:
-        if st.session_state.logged_in:
-            new_status = st.selectbox("Update", ["Open", "In Progress", "Resolved", "Closed"], 
-                                      index=["Open", "In Progress", "Resolved", "Closed"].index(ticket['status']),
-                                      key=f"s_{ticket['id']}")
-            if new_status != ticket['status']:
-                st.session_state.tickets[i]['status'] = new_status
-                save_tickets_to_github(st.session_state.tickets) # SAVE TO GITHUB
-                st.rerun()
-        else:
-            st.info(ticket['status'])
-    st.divider()
+
+if not st.session_state.tickets:
+    st.info("No tickets to display.")
+else:
+    # We use a list copy to avoid index errors during deletion
+    for i, ticket in enumerate(st.session_state.tickets):
+        col1, col2 = st.columns([3, 2])
+        
+        with col1:
+            st.markdown(f"**[{ticket['priority']}] {ticket['subject']}**")
+            st.caption(f"ID: {ticket['id']} | Filed: {ticket['timestamp']}")
+            st.write(ticket['description'])
+        
+        with col2:
+            if st.session_state.logged_in:
+                # Status Update Dropdown
+                new_status = st.selectbox(
+                    "Update Status", 
+                    ["Open", "In Progress", "Resolved", "Closed"], 
+                    index=["Open", "In Progress", "Resolved", "Closed"].index(ticket['status']),
+                    key=f"status_{ticket['id']}"
+                )
+                
+                if new_status != ticket['status']:
+                    st.session_state.tickets[i]['status'] = new_status
+                    save_tickets_to_github(st.session_state.tickets)
+                    st.rerun()
+                
+                # --- THE RESTORED DELETE BUTTON ---
+                if st.button("🗑️ Permanent Delete", key=f"del_{ticket['id']}", type="primary"):
+                    st.session_state.tickets.pop(i)
+                    save_tickets_to_github(st.session_state.tickets) # Pushes the change to GitHub
+                    st.toast(f"Ticket #{ticket['id']} deleted from GitHub.")
+                    st.rerun()
+            else:
+                # Non-admin view
+                st.info(f"Status: {ticket['status']}")
+        
+        st.divider()
