@@ -6,13 +6,5 @@
         "description": "testing tickets.json",
         "priority": "Urgent",
         "status": "Closed"
-    },
-    {
-        "id": 2,
-        "timestamp": "2026-02-27 20:01",
-        "subject": "test123134",
-        "description": "tesdt1513rwtw4t",
-        "priority": "High",
-        "status": "Closed"
     }
 ]
