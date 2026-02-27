@@ -5,7 +5,7 @@
         "subject": "test",
         "description": "testing tickets.json",
         "priority": "Urgent",
-        "status": "Open"
+        "status": "Closed"
     },
     {
         "id": 2,
